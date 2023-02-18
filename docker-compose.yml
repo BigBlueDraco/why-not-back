@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  database:
+    container_name: postgres-tinder-clone
+    image: postgres:15.2
+    restart: always
+    environment:
+      - POSTGRES_USER=${TYPEORM_USERNAME}
+      - POSTGRES_PASSWORD=${TYPEORM_PASSWORD}
+      - POSTGRES_DATABASE=${TYPEORM_DATABASE}
+    volumes:
+      - ./pgdata:/var/lib/postgressql/data
+    ports:
+      - ${TYPEORM_PORT}:${TYPEORM_PORT}
