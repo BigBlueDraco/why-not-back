@@ -13,14 +13,14 @@ export class UsersService {
   ) {}
 
   async createUser(userInput: CreateUserInput): Promise<UserEntity> {
-    return await this.userRepository.save({ ...userInput });
+    return this.userRepository.createUser({ ...userInput });
   }
 
   async getOneUser(id: number): Promise<UserEntity> {
     return await this.userRepository.findOneBy({ id });
   }
   async getAllUsers(): Promise<UserEntity[]> {
-    return await this.userRepository.find();
+    return await this.userRepository.getAllUsers();
   }
   async removeUser(id: number): Promise<number> {
     await this.userRepository.delete({ id });
