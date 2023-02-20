@@ -1,15 +1,36 @@
 version: '3.8'
 
 services:
-  database:
-    container_name: postgres-tinder-clone
-    image: postgres:15.2
+  # database:
+  #   container_name: postgres-tinder-clone
+  #   image: postgres
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_USER=${TYPEORM_USERNAME}
+  #     - POSTGRES_PASSWORD=${TYPEORM_PASSWORD}
+  #     - POSTGRES_DATABASE=${TYPEORM_DATABASE}
+  #   volumes:
+  #     - ./pgdata:/var/lib/postgressql/data
+  #   ports:
+  #     - ${TYPEORM_PORT}:${TYPEORM_PORT}
+
+  db:
+    image: postgres
     restart: always
     environment:
-      - POSTGRES_USER=${TYPEORM_USERNAME}
-      - POSTGRES_PASSWORD=${TYPEORM_PASSWORD}
-      - POSTGRES_DATABASE=${TYPEORM_DATABASE}
-    volumes:
-      - ./pgdata:/var/lib/postgressql/data
+      POSTGRES_USER: ${TYPEORM_USERNAME}
+      POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
+      POSTGRES_DB: ${TYPEORM_DATABASE}
     ports:
-      - ${TYPEORM_PORT}:${TYPEORM_PORT}
+      - '${TYPEORM_PORT}:5432'
+
+  backend:
+    build: .
+    restart: always
+    environment:
+      API_HOST: ${API_HOST}
+      API_PORT: ${API_PORT}
+    ports:
+      - '${API_PORT}:${API_PORT}'
+    depends_on:
+      - db
