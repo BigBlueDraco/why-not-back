@@ -22,7 +22,6 @@ export class UsersService {
   async getOneUserByEmail(email: string): Promise<any> {
     const users = await this.getAllUsers();
     const user = users.find((elem) => elem.email === email);
-    // const user = this.userRepository.findBy({ email });
     return await user;
   }
   async getAllUsers(): Promise<any[]> {
