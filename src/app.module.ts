@@ -6,6 +6,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { OfferModule } from './offer/offer.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -37,6 +38,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     UsersModule,
     AuthModule,
+    OfferModule,
   ],
   controllers: [],
   providers: [],
