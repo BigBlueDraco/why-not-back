@@ -1,15 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  Unique,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Offer } from 'src/offer/entities/offer.entity';
 
 @ObjectType()
-@Entity('users')
 export class UserResponse {
   @Field(() => ID)
   id: number;
@@ -28,4 +20,6 @@ export class UserResponse {
 
   @Field()
   last_name: string;
+  @Field(() => [Offer], { nullable: true })
+  offers: Offer[];
 }

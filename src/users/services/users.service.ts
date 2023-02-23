@@ -32,6 +32,7 @@ export class UsersService {
     return id;
   }
   async updateUser(UpdateUserInput: UpdateUserInput): Promise<UserEntity> {
+    console.log(UpdateUserInput);
     await this.userRepository.update(
       { id: UpdateUserInput.id },
       { ...UpdateUserInput },

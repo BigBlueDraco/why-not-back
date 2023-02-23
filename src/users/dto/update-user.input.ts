@@ -5,11 +5,11 @@ export class UpdateUserInput {
   @Field(() => ID)
   id: number;
   @Field({ nullable: true })
-  email: string;
+  email?: string;
   @Field({ nullable: true })
-  first_name: string;
+  first_name?: string;
   @Field({ nullable: true })
-  last_name: string;
+  last_name?: string;
   @Field({ nullable: true })
-  password: string;
+  password?: string;
 }

@@ -3,8 +3,8 @@
 # ------------------------------------------------------
 
 input CreateOfferInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  description: String!
+  title: String!
 }
 
 input CreateUserInput {
@@ -30,7 +30,7 @@ input LoginUserInput {
 }
 
 type Mutation {
-  createOffer(createOfferInput: CreateOfferInput!): Offer!
+  createOffer(createOfferInput: CreateOfferInput!, userId: Float!): Offer!
   createUser(createUser: CreateUserInput!): UserEntity!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeOffer(id: Int!): Offer!
@@ -61,9 +61,9 @@ input SignupUserInput {
 }
 
 input UpdateOfferInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  description: String
   id: Int!
+  title: String
 }
 
 input UpdateUserInput {
@@ -80,6 +80,7 @@ type UserEntity {
   first_name: String!
   id: ID!
   last_name: String!
+  offers: [Offer!]
   password: String!
   updatedAt: DateTime!
 }
@@ -90,5 +91,6 @@ type UserResponse {
   first_name: String!
   id: ID!
   last_name: String!
+  offers: [Offer!]
   updatedAt: DateTime!
 }
