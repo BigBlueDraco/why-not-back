@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateOfferInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 input CreateUserInput {
   email: String!
   first_name: String!
@@ -25,16 +30,27 @@ input LoginUserInput {
 }
 
 type Mutation {
+  createOffer(createOfferInput: CreateOfferInput!): Offer!
   createUser(createUser: CreateUserInput!): UserEntity!
   login(loginUserInput: LoginUserInput!): LoginResponse!
+  removeOffer(id: Int!): Offer!
   removeUser(id: Float!): Float!
   signup(signupUserInput: SignupUserInput!): UserEntity!
-  updateUser(updateUser: UpdateUserInput!): UserEntity!
+  updateOffer(updateOfferInput: UpdateOfferInput!): Offer!
+  updateUser(updateUser: UpdateUserInput!): UserResponse!
+}
+
+type Offer {
+  description: String!
+  id: ID!
+  title: String!
+  user: UserEntity!
 }
 
 type Query {
-  getAllUsers: [UserEntitySecure!]!
-  getOneUser(id: Float!): UserEntitySecure!
+  getAllUsers: [UserResponse!]!
+  getOneUser(id: Float!): UserResponse!
+  offer(id: Int!): Offer!
 }
 
 input SignupUserInput {
@@ -42,6 +58,12 @@ input SignupUserInput {
   first_name: String!
   last_name: String!
   password: String!
+}
+
+input UpdateOfferInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
 
 input UpdateUserInput {
@@ -62,7 +84,7 @@ type UserEntity {
   updatedAt: DateTime!
 }
 
-type UserEntitySecure {
+type UserResponse {
   createdAt: DateTime!
   email: String!
   first_name: String!

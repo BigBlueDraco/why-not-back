@@ -1,10 +1,11 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { UserEntity, UserEntitySecure } from '../entities/user.entity';
-import { CreateUserInput } from '../inputs/create-user.input';
-import { UpdateUserInput } from '../inputs/update-user.input';
+import { UserEntity } from '../entities/user.entity';
+import { CreateUserInput } from '../dto/create-user.input';
+import { UpdateUserInput } from '../dto/update-user.input';
 import { UsersService } from '../services/users.service';
+import { UserResponse } from '../dto/get-user.response';
 
 @Resolver('User')
 export class UsersResolver {
@@ -13,15 +14,15 @@ export class UsersResolver {
   @Mutation(() => UserEntity)
   async createUser(
     @Args('createUser') createUserInput: CreateUserInput,
-  ): Promise<UserEntitySecure> {
+  ): Promise<UserEntity> {
     return await this.usersService.createUser(createUserInput);
   }
 
-  @Mutation(() => UserEntity)
+  @Mutation(() => UserResponse)
   @UseGuards(JwtAuthGuard)
   async updateUser(
     @Args('updateUser') updateUserInput: UpdateUserInput,
-  ): Promise<UserEntity> {
+  ): Promise<UserResponse> {
     return await this.usersService.updateUser(updateUserInput);
   }
   @Mutation(() => Number)
@@ -30,14 +31,14 @@ export class UsersResolver {
     return await this.usersService.removeUser(id);
   }
 
-  @Query(() => UserEntitySecure)
+  @Query(() => UserResponse)
   @UseGuards(JwtAuthGuard)
-  async getOneUser(@Args('id') id: number): Promise<UserEntitySecure> {
+  async getOneUser(@Args('id') id: number): Promise<UserResponse> {
     return await this.usersService.getOneUser(id);
   }
-  @Query(() => [UserEntitySecure])
+  @Query(() => [UserResponse])
   @UseGuards(JwtAuthGuard)
-  async getAllUsers(): Promise<UserEntitySecure[]> {
+  async getAllUsers(): Promise<UserResponse[]> {
     return await this.usersService.getAllUsers();
   }
 }
