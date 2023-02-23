@@ -4,6 +4,8 @@ import { UsersService } from 'src/users/services/users.service';
 import { LoginResponse } from '../dto/login-response';
 import { LoginUserInput } from '../dto/login-user.input';
 import { JwtService } from '@nestjs/jwt';
+import { SignupUserInput } from '../dto/signup-user.input';
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -29,5 +31,18 @@ export class AuthService {
       }),
       user,
     };
+  }
+  async singnup(singnupUserInput: SignupUserInput) {
+    const { email, password } = singnupUserInput;
+    const user = await this.usersService.getOneUserByEmail(email);
+    if (user) {
+      throw new Error('User already exists!');
+    }
+
+    const hashedPassword = await hash(password, 10);
+    return await this.usersService.createUser({
+      ...singnupUserInput,
+      password: hashedPassword,
+    });
   }
 }
