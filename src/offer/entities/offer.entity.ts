@@ -15,6 +15,9 @@ export class Offer {
   @Field()
   @Column()
   description: string;
+  @Field()
+  @Column()
+  userId: number;
   @Field(() => UserEntity)
   @ManyToOne(() => UserEntity, (user) => user.offers)
   user: UserEntity;

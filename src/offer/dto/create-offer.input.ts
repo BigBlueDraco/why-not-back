@@ -6,4 +6,6 @@ export class CreateOfferInput {
   title: string;
   @Field()
   description: string;
+  @Field()
+  userId: number;
 }

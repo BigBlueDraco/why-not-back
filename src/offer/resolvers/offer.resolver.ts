@@ -1,10 +1,22 @@
-import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  Context,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql';
 import { OfferService } from '../services/offer.service';
 import { Offer } from '../entities/offer.entity';
 import { CreateOfferInput } from '../dto/create-offer.input';
 import { UpdateOfferInput } from '../dto/update-offer.input';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { UserEntity } from 'src/users/entities/user.entity';
+import { OfferResponse } from '../dto/offer.response';
+import { UserResponse } from 'src/users/dto/get-user.response';
 
 @Resolver(() => Offer)
 export class OfferResolver {
@@ -12,22 +24,24 @@ export class OfferResolver {
 
   @Mutation(() => Offer)
   @UseGuards(JwtAuthGuard)
-  createOffer(
-    @Args('createOfferInput') createOfferInput: CreateOfferInput,
-    @Args('userId') userId: number,
-  ) {
+  createOffer(@Args('createOfferInput') createOfferInput: CreateOfferInput) {
     return this.offerService.create({
-      createOfferInput,
-      userId: userId,
+      ...createOfferInput,
     });
   }
 
-  @Query(() => [Offer], { name: 'offer' })
-  findAll() {
+  @Query(() => [Offer], { name: 'getAllOffers' })
+  findAll(): Promise<Offer[]> {
     return this.offerService.findAll();
   }
 
-  @Query(() => Offer, { name: 'offer' })
+  @ResolveField((returns) => UserResponse)
+  user(@Parent() offer: OfferResponse): Promise<UserResponse> {
+    console.log(offer);
+    return this.offerService.getUser(offer.userId);
+  }
+
+  @Query(() => Offer, { name: 'getUserById' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.offerService.findOne(id);
   }

@@ -5,6 +5,7 @@
 input CreateOfferInput {
   description: String!
   title: String!
+  userId: Float!
 }
 
 input CreateUserInput {
@@ -30,7 +31,7 @@ input LoginUserInput {
 }
 
 type Mutation {
-  createOffer(createOfferInput: CreateOfferInput!, userId: Float!): Offer!
+  createOffer(createOfferInput: CreateOfferInput!): Offer!
   createUser(createUser: CreateUserInput!): UserEntity!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeOffer(id: Int!): Offer!
@@ -45,12 +46,14 @@ type Offer {
   id: ID!
   title: String!
   user: UserEntity!
+  userId: Float!
 }
 
 type Query {
+  getAllOffers: [Offer!]!
   getAllUsers: [UserResponse!]!
   getOneUser(id: Float!): UserResponse!
-  offer(id: Int!): Offer!
+  getUserById(id: Int!): Offer!
 }
 
 input SignupUserInput {
@@ -64,6 +67,7 @@ input UpdateOfferInput {
   description: String
   id: Int!
   title: String
+  userId: Float
 }
 
 input UpdateUserInput {

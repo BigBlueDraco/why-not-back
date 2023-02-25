@@ -1,4 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
+import { Offer } from 'src/offer/entities/offer.entity';
 
 @InputType()
 export class UpdateUserInput {
