@@ -25,14 +25,13 @@ export class UsersService {
     return await user;
   }
   async getAllUsers(): Promise<any[]> {
-    return await this.userRepository.find();
+    return await this.userRepository.find({ relations: ['offers'] });
   }
   async removeUser(id: number): Promise<number> {
     await this.userRepository.delete({ id });
     return id;
   }
   async updateUser(UpdateUserInput: UpdateUserInput): Promise<UserEntity> {
-    console.log(UpdateUserInput);
     await this.userRepository.update(
       { id: UpdateUserInput.id },
       { ...UpdateUserInput },

@@ -14,7 +14,6 @@ import { CreateOfferInput } from '../dto/create-offer.input';
 import { UpdateOfferInput } from '../dto/update-offer.input';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { UserEntity } from 'src/users/entities/user.entity';
 import { OfferResponse } from '../dto/offer.response';
 import { UserResponse } from 'src/users/dto/get-user.response';
 
@@ -37,7 +36,6 @@ export class OfferResolver {
 
   @ResolveField((returns) => UserResponse)
   user(@Parent() offer: OfferResponse): Promise<UserResponse> {
-    console.log(offer);
     return this.offerService.getUser(offer.userId);
   }
 

@@ -23,7 +23,7 @@ export class OfferService {
   }
 
   async findAll(): Promise<Offer[]> {
-    return await this.offerRepository.find();
+    return await this.offerRepository.find({ relations: ['user'] });
   }
 
   async findOne(id: number) {

@@ -46,7 +46,6 @@ type Offer {
   id: ID!
   title: String!
   user: UserEntity!
-  userId: Float!
 }
 
 type Query {
