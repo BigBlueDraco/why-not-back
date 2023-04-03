@@ -6,6 +6,7 @@ import { LoginUserInput } from '../dto/login-user.input';
 import { JwtService } from '@nestjs/jwt';
 import { SignupUserInput } from '../dto/signup-user.input';
 import { hash } from 'bcrypt';
+import { SingupResponse } from '../dto/singip-response';
 
 @Injectable()
 export class AuthService {
@@ -32,7 +33,7 @@ export class AuthService {
       user,
     };
   }
-  async singnup(singnupUserInput: SignupUserInput) {
+  async singnup(singnupUserInput: SignupUserInput): Promise<SingupResponse> {
     const { email, password } = singnupUserInput;
     const user = await this.usersService.getOneUserByEmail(email);
     if (user) {
@@ -40,9 +41,16 @@ export class AuthService {
     }
 
     const hashedPassword = await hash(password, 10);
-    return await this.usersService.createUser({
+    const newUser = await this.usersService.createUser({
       ...singnupUserInput,
       password: hashedPassword,
     });
+    return {
+      access_token: this.jwtService.sign({
+        username: newUser.email,
+        sub: newUser.id,
+      }),
+      user: newUser,
+    };
   }
 }

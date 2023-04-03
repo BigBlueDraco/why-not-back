@@ -36,15 +36,19 @@ type Mutation {
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeOffer(id: Int!): Offer!
   removeUser(id: Float!): Float!
-  signup(signupUserInput: SignupUserInput!): UserEntity!
+  signup(signupUserInput: SignupUserInput!): SingupResponse!
   updateOffer(updateOfferInput: UpdateOfferInput!): Offer!
   updateUser(updateUser: UpdateUserInput!): UserResponse!
 }
 
 type Offer {
+  createdAt: DateTime!
   description: String!
   id: ID!
+  liked: [Offer!]
+  matches: [Offer!]
   title: String!
+  updatedAt: DateTime!
   user: UserEntity!
 }
 
@@ -60,6 +64,11 @@ input SignupUserInput {
   first_name: String!
   last_name: String!
   password: String!
+}
+
+type SingupResponse {
+  access_token: String!
+  user: UserEntity!
 }
 
 input UpdateOfferInput {

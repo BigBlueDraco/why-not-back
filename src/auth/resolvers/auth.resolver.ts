@@ -4,6 +4,7 @@ import { UserEntity } from 'src/users/entities/user.entity';
 import { LoginResponse } from '../dto/login-response';
 import { LoginUserInput } from '../dto/login-user.input';
 import { SignupUserInput } from '../dto/signup-user.input';
+import { SingupResponse } from '../dto/singip-response';
 import { GqlAuthGuard } from '../gql-auth.guard';
 import { AuthService } from '../services/auth.service';
 
@@ -20,7 +21,7 @@ export class AuthResolver {
     return this.authService.login(context.user);
   }
 
-  @Mutation(() => UserEntity)
+  @Mutation(() => SingupResponse)
   signup(@Args('signupUserInput') signupUserInput: SignupUserInput) {
     return this.authService.singnup(signupUserInput);
   }
