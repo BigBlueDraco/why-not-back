@@ -4,12 +4,14 @@ import { UserEntity } from '../entities/user.entity';
 import { CreateUserInput } from '../dto/create-user.input';
 import { UpdateUserInput } from '../dto/update-user.input';
 import { Repository } from 'typeorm';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private jwtService: JwtService,
   ) {}
 
   async createUser(userInput: CreateUserInput): Promise<UserEntity> {

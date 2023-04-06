@@ -55,6 +55,7 @@ type Offer {
 type Query {
   getAllOffers: [Offer!]!
   getAllUsers: [UserResponse!]!
+  getCurrentUser: UserResponse!
   getOneUser(id: Float!): UserResponse!
   getUserById(id: Int!): Offer!
 }

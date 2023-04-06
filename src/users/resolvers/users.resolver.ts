@@ -1,15 +1,19 @@
-import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
+import { UseGuards, Headers } from '@nestjs/common';
+import { Args, Mutation, Resolver, Query, Context } from '@nestjs/graphql';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserEntity } from '../entities/user.entity';
 import { CreateUserInput } from '../dto/create-user.input';
 import { UpdateUserInput } from '../dto/update-user.input';
 import { UsersService } from '../services/users.service';
 import { UserResponse } from '../dto/get-user.response';
+import { JwtService } from '@nestjs/jwt';
 
 @Resolver('User')
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Mutation(() => UserEntity)
   async createUser(
@@ -38,7 +42,16 @@ export class UsersResolver {
   }
   @Query(() => [UserResponse])
   @UseGuards(JwtAuthGuard)
-  async getAllUsers(): Promise<UserResponse[]> {
+  async getAllUsers(@Context() context): Promise<UserResponse[]> {
     return await this.usersService.getAllUsers();
+  }
+  @Query(() => UserResponse)
+  @UseGuards(JwtAuthGuard)
+  async getCurrentUser(@Context() context): Promise<UserResponse> {
+    const req = context.req;
+    const authHeader = req.headers.authorization;
+    const token = authHeader.split(' ')[1];
+    const decoded = this.jwtService.decode(token);
+    return await this.usersService.getOneUser(decoded.sub);
   }
 }

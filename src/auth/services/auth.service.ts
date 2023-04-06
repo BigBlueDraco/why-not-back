@@ -14,11 +14,9 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
-  //   Почисти цю функцію і зроби типи більш правильними
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.getOneUserByEmail(email);
     if (user && user?.password === password) {
-      //Зроби більш безпечним
       const { password, ...result } = user;
       return result;
     }
