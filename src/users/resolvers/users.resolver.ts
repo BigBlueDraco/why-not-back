@@ -48,10 +48,6 @@ export class UsersResolver {
   @Query(() => UserResponse)
   @UseGuards(JwtAuthGuard)
   async getCurrentUser(@Context() context): Promise<UserResponse> {
-    const req = context.req;
-    const authHeader = req.headers.authorization;
-    const token = authHeader.split(' ')[1];
-    const decoded = this.jwtService.decode(token);
-    return await this.usersService.getOneUser(decoded.sub);
+    return await this.usersService.userFromContext(context);
   }
 }

@@ -40,4 +40,21 @@ export class UsersService {
     );
     return await this.getOneUser(UpdateUserInput.id);
   }
+  async userFromContext(context: any): Promise<any> {
+    const req = context.req;
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return null;
+    }
+    const [, token] = authHeader.split(' ');
+    if (!token) {
+      return null;
+    }
+    try {
+      const decoded = await this.jwtService.verifyAsync(token);
+      return await this.getOneUser(decoded.id);
+    } catch (err) {
+      return null;
+    }
+  }
 }
