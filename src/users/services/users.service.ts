@@ -20,7 +20,12 @@ export class UsersService {
   }
 
   async getOneUser(id: number): Promise<any> {
-    return await this.userRepository.findOneBy({ id });
+    return this.userRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['offers'],
+    });
   }
   async getOneUserByEmail(email: string): Promise<any> {
     const users = await this.getAllUsers();
@@ -28,7 +33,7 @@ export class UsersService {
     return await user;
   }
   async getAllUsers(): Promise<UserEntity[]> {
-    return await this.userRepository.find({ relations: ['offer'] });
+    return await this.userRepository.find({ relations: ['offers'] });
   }
   async removeUser(id: number): Promise<number> {
     await this.userRepository.delete({ id });

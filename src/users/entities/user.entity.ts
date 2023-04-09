@@ -43,6 +43,6 @@ export class UserEntity {
   password: string;
 
   @Field(() => [Offer], { nullable: true })
-  @OneToMany(() => Offer, (offer) => offer.user)
+  @OneToMany(() => Offer, (offers) => offers.user)
   offers: Offer[];
 }
