@@ -23,34 +23,46 @@ export class OfferResolver {
 
   @Mutation(() => Offer)
   @UseGuards(JwtAuthGuard)
-  createOffer(@Args('createOfferInput') createOfferInput: CreateOfferInput) {
-    return this.offerService.create({
+  async createOffer(
+    @Args('createOfferInput') createOfferInput: CreateOfferInput,
+    @Context() context,
+  ) {
+    return await this.offerService.create(context, {
       ...createOfferInput,
     });
   }
 
   @Query(() => [Offer], { name: 'getAllOffers' })
-  findAll(): Promise<Offer[]> {
-    return this.offerService.findAll();
+  @UseGuards(JwtAuthGuard)
+  async findAll(): Promise<Offer[]> {
+    return await this.offerService.findAll();
   }
 
   @ResolveField((returns) => UserResponse)
-  user(@Parent() offer: OfferResponse): Promise<UserResponse> {
-    return this.offerService.getUser(offer.userId);
+  @UseGuards(JwtAuthGuard)
+  async user(@Parent() offer: OfferResponse): Promise<UserResponse> {
+    return await this.offerService.getUser(offer.userId);
   }
 
-  @Query(() => Offer, { name: 'getUserById' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.offerService.findOne(id);
+  @Query(() => Offer, { name: 'getOfferById' })
+  @UseGuards(JwtAuthGuard)
+  async findOne(@Args('id', { type: () => Int }) id: number) {
+    return await this.offerService.findOne(id);
+  }
+  @Mutation(() => Offer)
+  @UseGuards(JwtAuthGuard)
+  async updateOffer(
+    @Args('updateOfferInput') updateOfferInput: UpdateOfferInput,
+  ): Promise<Offer> {
+    return await this.offerService.update(
+      updateOfferInput.id,
+      updateOfferInput,
+    );
   }
 
   @Mutation(() => Offer)
-  updateOffer(@Args('updateOfferInput') updateOfferInput: UpdateOfferInput) {
-    return this.offerService.update(updateOfferInput.id, updateOfferInput);
-  }
-
-  @Mutation(() => Offer)
-  removeOffer(@Args('id', { type: () => Int }) id: number) {
+  @UseGuards(JwtAuthGuard)
+  async removeOffer(@Args('id', { type: () => Int }) id: number) {
     return this.offerService.remove(id);
   }
 }

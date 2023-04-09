@@ -1,6 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { UserEntity } from 'src/users/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 export class OfferResponse {
@@ -10,6 +9,6 @@ export class OfferResponse {
   description: string;
   @Field()
   userId: number;
-  // @Field(() => UserEntity)
-  // user: UserEntity;
+  @Field(() => UserEntity)
+  user: UserEntity;
 }

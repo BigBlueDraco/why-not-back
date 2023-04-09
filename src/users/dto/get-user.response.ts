@@ -20,6 +20,7 @@ export class UserResponse {
 
   @Field()
   last_name: string;
+
   @Field(() => [Offer], { nullable: true })
   offers: Offer[];
 }

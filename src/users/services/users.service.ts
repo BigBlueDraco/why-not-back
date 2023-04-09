@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { CreateUserInput } from '../dto/create-user.input';
 import { UpdateUserInput } from '../dto/update-user.input';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { OfferService } from 'src/offer/services/offer.service';
 
 @Injectable()
 export class UsersService {
@@ -26,8 +27,8 @@ export class UsersService {
     const user = users.find((elem) => elem.email === email);
     return await user;
   }
-  async getAllUsers(): Promise<any[]> {
-    return await this.userRepository.find({ relations: ['offers'] });
+  async getAllUsers(): Promise<UserEntity[]> {
+    return await this.userRepository.find({ relations: ['offer'] });
   }
   async removeUser(id: number): Promise<number> {
     await this.userRepository.delete({ id });
