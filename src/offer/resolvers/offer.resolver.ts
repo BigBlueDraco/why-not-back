@@ -38,12 +38,6 @@ export class OfferResolver {
     return await this.offerService.findAll();
   }
 
-  @ResolveField((returns) => UserResponse)
-  @UseGuards(JwtAuthGuard)
-  async user(@Parent() offer: OfferResponse): Promise<UserResponse> {
-    return await this.offerService.getUser(offer.userId);
-  }
-
   @Query(() => Offer, { name: 'getOfferById' })
   @UseGuards(JwtAuthGuard)
   async findOne(@Args('id', { type: () => Int }) id: number) {
@@ -64,5 +58,22 @@ export class OfferResolver {
   @UseGuards(JwtAuthGuard)
   async removeOffer(@Args('id', { type: () => Int }) id: number) {
     return this.offerService.remove(id);
+  }
+
+  @ResolveField((returns) => UserResponse)
+  @UseGuards(JwtAuthGuard)
+  async user(@Parent() offer: OfferResponse): Promise<UserResponse> {
+    return await this.offerService.getUser(offer.userId);
+  }
+
+  @ResolveField((returns) => [Offer])
+  @UseGuards(JwtAuthGuard)
+  async matches(): Promise<Offer[]> {
+    return await this.offerService.findAll();
+  }
+  @ResolveField((returns) => [Offer])
+  @UseGuards(JwtAuthGuard)
+  async liked(): Promise<Offer[]> {
+    return await this.offerService.findAll();
   }
 }

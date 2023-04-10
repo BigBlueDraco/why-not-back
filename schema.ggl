@@ -91,7 +91,7 @@ type UserEntity {
   first_name: String!
   id: ID!
   last_name: String!
-  offers: [Offer!]
+  offers: [Offer!]!
   password: String!
   updatedAt: DateTime!
 }

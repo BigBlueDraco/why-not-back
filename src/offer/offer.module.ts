@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { OfferService } from './services/offer.service';
 import { OfferResolver } from './resolvers/offer.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -6,7 +6,8 @@ import { Offer } from './entities/offer.entity';
 import { UsersModule } from 'src/users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Offer]), UsersModule],
+  imports: [TypeOrmModule.forFeature([Offer]), forwardRef(() => UsersModule)],
   providers: [OfferResolver, OfferService],
+  exports: [OfferService],
 })
 export class OfferModule {}

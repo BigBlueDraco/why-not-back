@@ -1,9 +1,10 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType, ResolveField } from '@nestjs/graphql';
 import { Offer } from 'src/offer/entities/offer.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
@@ -42,7 +43,8 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Field(() => [Offer], { nullable: true })
+  @Field(() => [Offer])
   @OneToMany(() => Offer, (offers) => offers.user)
+  @JoinColumn()
   offers: Offer[];
 }
