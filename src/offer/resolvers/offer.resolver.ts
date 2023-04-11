@@ -60,7 +60,7 @@ export class OfferResolver {
     return this.offerService.remove(id);
   }
 
-  @ResolveField((returns) => UserResponse)
+  @ResolveField((returns) => UserResponse, { nullable: true })
   @UseGuards(JwtAuthGuard)
   async user(@Parent() offer: OfferResponse): Promise<UserResponse> {
     return await this.offerService.getUser(offer.userId);

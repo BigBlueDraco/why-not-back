@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 
 @ObjectType()
-@Entity('offer')
+@Entity('offers')
 export class Offer {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
@@ -31,7 +31,9 @@ export class Offer {
   @Field()
   @Column()
   description: string;
-
+  @Column()
+  @Field()
+  userId: number;
   @Field(() => UserEntity)
   @ManyToOne(() => UserEntity, (user) => user.offers)
   @JoinColumn()

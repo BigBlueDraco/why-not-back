@@ -1,5 +1,12 @@
 import { UseGuards, Headers } from '@nestjs/common';
-import { Args, Mutation, Resolver, Query, Context } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Resolver,
+  Query,
+  Context,
+  ResolveField,
+} from '@nestjs/graphql';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserEntity } from '../entities/user.entity';
 import { CreateUserInput } from '../dto/create-user.input';
@@ -7,8 +14,10 @@ import { UpdateUserInput } from '../dto/update-user.input';
 import { UsersService } from '../services/users.service';
 import { UserResponse } from '../dto/get-user.response';
 import { JwtService } from '@nestjs/jwt';
+import { Offer } from 'src/offer/entities/offer.entity';
+import { OfferResponse } from 'src/offer/dto/offer.response';
 
-@Resolver('User')
+@Resolver(() => UserEntity)
 export class UsersResolver {
   constructor(
     private readonly usersService: UsersService,
@@ -40,9 +49,9 @@ export class UsersResolver {
   async getOneUser(@Args('id') id: number): Promise<UserResponse> {
     return await this.usersService.getOneUser(id);
   }
-  @Query(() => [UserResponse])
+  @Query(() => [UserResponse], { name: 'getAllUsers' })
   @UseGuards(JwtAuthGuard)
-  async getAllUsers(@Context() context): Promise<UserResponse[]> {
+  async findAll(@Context() context): Promise<UserResponse[]> {
     return await this.usersService.getAllUsers();
   }
   @Query(() => UserResponse)
@@ -50,4 +59,11 @@ export class UsersResolver {
   async getCurrentUser(@Context() context): Promise<UserResponse> {
     return await this.usersService.userFromContext(context);
   }
+
+  // @ResolveField((returns) => [OfferResponse])
+  // @UseGuards(JwtAuthGuard)
+  // async offers(): Promise<Offer[]> {
+  //   console.log('1');
+  //   return await this.usersService.findOffersForUser(1);
+  // }
 }

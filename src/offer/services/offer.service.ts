@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/services/users.service';
@@ -13,22 +13,27 @@ export class OfferService {
   constructor(
     @InjectRepository(Offer)
     private readonly offerRepository: Repository<Offer>,
+    @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
   ) {}
   async create(
     context: any,
     createOfferInput: CreateOfferInput,
   ): Promise<OfferResponse> {
-    const { id: userId } = await this.usersService.userFromContext(context);
+    const user = await this.usersService.userFromContext(context);
+    console.log({
+      userId: user.id,
+      ...createOfferInput,
+    });
     const offer = await this.offerRepository.save({
-      ...userId,
+      userId: user.id,
       ...createOfferInput,
     });
     return offer;
   }
 
   async findAll(): Promise<Offer[]> {
-    return await this.offerRepository.find({ relations: ['user'] });
+    return await this.offerRepository.find({ relations: { user: true } });
   }
 
   async findOne(id: number): Promise<any> {

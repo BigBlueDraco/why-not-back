@@ -13,6 +13,8 @@ export class UsersService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private jwtService: JwtService,
+    @Inject(forwardRef(() => OfferService))
+    private readonly offerService: OfferService,
   ) {}
 
   async createUser(userInput: CreateUserInput): Promise<UserEntity> {
@@ -24,7 +26,9 @@ export class UsersService {
       where: {
         id,
       },
-      relations: ['offers'],
+      relations: {
+        offers: true,
+      },
     });
   }
   async getOneUserByEmail(email: string): Promise<any> {
@@ -46,6 +50,11 @@ export class UsersService {
     );
     return await this.getOneUser(UpdateUserInput.id);
   }
+  async findOffersForUser(id) {
+    const offers = await this.offerService.findAll();
+    console.log(offers);
+    return await this.offerService.findAll();
+  }
   async userFromContext(context: any): Promise<any> {
     const req = context.req;
     const authHeader = req.headers.authorization;
@@ -58,7 +67,7 @@ export class UsersService {
     }
     try {
       const decoded = await this.jwtService.verifyAsync(token);
-      return await this.getOneUser(decoded.id);
+      return await this.getOneUser(decoded.sub);
     } catch (err) {
       return null;
     }
