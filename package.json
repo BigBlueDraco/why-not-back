@@ -33,6 +33,7 @@
     "bcrypt": "^5.1.0",
     "buffer": "^6.0.3",
     "graphql": "^16.6.0",
+    "nestjs-typeorm-paginate": "^4.0.3",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",

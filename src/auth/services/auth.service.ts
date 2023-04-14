@@ -22,13 +22,16 @@ export class AuthService {
     }
     return null;
   }
-  async login(user: UserEntity): Promise<LoginResponse> {
+  async login(loginUserInput: LoginUserInput): Promise<LoginResponse> {
+    const user = await this.usersService.getOneUserByEmail(
+      loginUserInput.email,
+    );
     return {
       access_token: this.jwtService.sign({
-        username: user.email,
+        username: loginUserInput.email,
         sub: user.id,
       }),
-      user,
+      user: user,
     };
   }
   async singnup(singnupUserInput: SignupUserInput): Promise<SingupResponse> {

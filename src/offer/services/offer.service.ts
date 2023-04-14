@@ -7,6 +7,9 @@ import { CreateOfferInput } from '../dto/create-offer.input';
 import { OfferResponse } from '../dto/offer.response';
 import { UpdateOfferInput } from '../dto/update-offer.input';
 import { Offer } from '../entities/offer.entity';
+import { paginate } from 'nestjs-typeorm-paginate';
+import { OfferPagination } from '../dto/OfferPagination.response';
+import { Pagination } from 'src/pagination/paginationType';
 
 @Injectable()
 export class OfferService {
@@ -21,10 +24,7 @@ export class OfferService {
     createOfferInput: CreateOfferInput,
   ): Promise<OfferResponse> {
     const user = await this.usersService.userFromContext(context);
-    console.log({
-      userId: user.id,
-      ...createOfferInput,
-    });
+
     const offer = await this.offerRepository.save({
       userId: user.id,
       ...createOfferInput,
@@ -32,8 +32,25 @@ export class OfferService {
     return offer;
   }
 
-  async findAll(): Promise<Offer[]> {
-    return await this.offerRepository.find({ relations: { user: true } });
+  async findAll(
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<OfferPagination> {
+    const { meta, items } = await paginate(
+      this.offerRepository,
+      { page, limit },
+      { relations: ['user'] },
+    );
+    return {
+      items: items,
+      pagination: {
+        totalItems: meta.totalItems,
+        itemCount: meta.itemCount,
+        itemsPerPage: meta.itemsPerPage,
+        totalPages: meta.totalPages,
+        currentPage: meta.currentPage,
+      },
+    };
   }
 
   async findOne(id: number): Promise<any> {

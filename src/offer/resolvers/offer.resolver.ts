@@ -16,6 +16,7 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { OfferResponse } from '../dto/offer.response';
 import { UserResponse } from 'src/users/dto/get-user.response';
+import { OfferPagination } from '../dto/OfferPagination.response';
 
 @Resolver(() => Offer)
 export class OfferResolver {
@@ -32,10 +33,14 @@ export class OfferResolver {
     });
   }
 
-  @Query(() => [Offer], { name: 'getAllOffers' })
+  @Query(() => OfferPagination, { name: 'getAllOffers' })
   @UseGuards(JwtAuthGuard)
-  async findAll(): Promise<Offer[]> {
-    return await this.offerService.findAll();
+  async findAll(
+    @Args('page') page: number = 1,
+    @Args('limit') limit: number = 10,
+  ): Promise<OfferPagination> {
+    const data = await this.offerService.findAll(page, limit);
+    return data;
   }
 
   @Query(() => Offer, { name: 'getOfferById' })
@@ -66,14 +71,14 @@ export class OfferResolver {
     return await this.offerService.getUser(offer.userId);
   }
 
-  @ResolveField((returns) => [Offer])
-  @UseGuards(JwtAuthGuard)
-  async matches(): Promise<Offer[]> {
-    return await this.offerService.findAll();
-  }
-  @ResolveField((returns) => [Offer])
-  @UseGuards(JwtAuthGuard)
-  async liked(): Promise<Offer[]> {
-    return await this.offerService.findAll();
-  }
+  // @ResolveField((returns) => [Offer])
+  // @UseGuards(JwtAuthGuard)
+  // async matches(): Promise<Offer[]> {
+  //   return await this.offerService.findAll();
+  // }
+  // @ResolveField((returns) => [Offer])
+  // @UseGuards(JwtAuthGuard)
+  // async liked(): Promise<Offer[]> {
+  //   return await this.offerService.findAll();
+  // }
 }

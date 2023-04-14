@@ -52,8 +52,21 @@ type Offer {
   userId: Float!
 }
 
+type OfferPagination {
+  items: [Offer!]!
+  pagination: Pagination!
+}
+
+type Pagination {
+  currentPage: Int!
+  itemCount: Int!
+  itemsPerPage: Int!
+  totalItems: Int!
+  totalPages: Int!
+}
+
 type Query {
-  getAllOffers: [Offer!]!
+  getAllOffers(limit: Float!, page: Float!): OfferPagination!
   getAllUsers: [UserResponse!]!
   getCurrentUser: UserResponse!
   getOfferById(id: Int!): Offer!
