@@ -5,4 +5,6 @@ import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 export class UpdateOfferInput extends PartialType(CreateOfferInput) {
   @Field(() => Int)
   id: number;
+  @Field(() => Int, { nullable: true })
+  likedId: number;
 }

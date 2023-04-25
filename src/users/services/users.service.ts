@@ -52,7 +52,6 @@ export class UsersService {
   }
   async findOffersForUser(id) {
     const offers = await this.offerService.findAll();
-    console.log(offers);
     return await this.offerService.findAll();
   }
   async userFromContext(context: any): Promise<any> {
