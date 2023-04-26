@@ -9,7 +9,6 @@ import { OfferModule } from 'src/offer/offer.module';
 
 @Module({
   imports: [
-    forwardRef(() => OfferModule),
     TypeOrmModule.forFeature([UserEntity]),
     JwtModule.registerAsync({
       imports: [ConfigModule],

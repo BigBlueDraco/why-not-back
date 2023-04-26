@@ -10,6 +10,7 @@ import { Offer } from '../entities/offer.entity';
 import { paginate } from 'nestjs-typeorm-paginate';
 import { OfferPagination } from '../dto/OfferPagination.response';
 import { Pagination } from 'src/pagination/paginationType';
+import { log } from 'console';
 
 @Injectable()
 export class OfferService {
@@ -39,7 +40,12 @@ export class OfferService {
     const { meta, items } = await paginate(
       this.offerRepository,
       { page, limit },
-      { relations: ['user'] },
+      {
+        relations: {
+          user: true,
+          liked: true,
+        },
+      },
     );
     return {
       items: items,
@@ -54,12 +60,25 @@ export class OfferService {
   }
 
   async findOne(id: number): Promise<any> {
-    return await this.offerRepository.findOneBy({ id });
+    const offer = await this.offerRepository.findOne({
+      where: { id },
+      relations: { user: true, liked: true },
+    });
+    log(offer);
+    return offer;
   }
 
   async update(id: number, updateOfferInput: UpdateOfferInput): Promise<any> {
-    const res = await this.offerRepository.update(id, { ...updateOfferInput });
-    return await this.findOne(id);
+    const { likedId, ...rest } = updateOfferInput;
+    const liked = await this.offerRepository.findOne({
+      where: { id: likedId },
+    });
+    const offer = await this.offerRepository.findOne({
+      where: { id: id },
+      relations: { liked: true },
+    });
+    const res = await this.offerRepository.update(id, { ...offer });
+    return res;
   }
 
   async remove(id: number) {

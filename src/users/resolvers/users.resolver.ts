@@ -46,11 +46,4 @@ export class UsersResolver {
   async getCurrentUser(@Context() context): Promise<UserResponse> {
     return await this.usersService.userFromContext(context);
   }
-
-  // @ResolveField((returns) => [OfferResponse])
-  // @UseGuards(JwtAuthGuard)
-  // async offers(): Promise<Offer[]> {
-  //   console.log('1');
-  //   return await this.usersService.findOffersForUser(1);
-  // }
 }

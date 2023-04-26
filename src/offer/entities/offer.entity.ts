@@ -1,4 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { Like } from 'src/like/entities/like.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import {
   Column,
@@ -6,6 +7,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -34,17 +36,24 @@ export class Offer {
   @Column()
   @Field()
   userId: number;
+
   @Field(() => UserEntity)
-  @ManyToOne(() => UserEntity, (user) => user.offers)
+  @ManyToOne(() => UserEntity, (user) => user.offers, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: UserEntity;
 
-  @Field(() => [Offer], { nullable: true })
-  @ManyToOne(() => Offer, (offer) => offer.liked)
+  @Field(() => [Like], { nullable: true })
+  @OneToMany(() => Like, (like) => like.received)
   @JoinColumn()
-  liked: Offer[];
+  liked: Like[];
+
+  @Field(() => [Like], { nullable: true })
+  @OneToMany(() => Like, (like) => like.given)
+  @JoinColumn()
+  likes: Like[];
+
   @Field(() => [Offer], { nullable: true })
-  @ManyToOne(() => Offer, (offer) => offer.matches)
+  @OneToMany(() => Offer, (offer) => offer.matches)
   @JoinColumn()
   matches: Offer[];
 }
