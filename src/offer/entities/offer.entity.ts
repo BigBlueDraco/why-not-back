@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Grade } from 'src/grade/entities/grade.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import {

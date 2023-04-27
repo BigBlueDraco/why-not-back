@@ -7,4 +7,7 @@ export class CreateGradeInput {
 
   @Field(() => Int)
   receivedId: number;
+
+  @Field(() => Boolean)
+  isLiked: boolean;
 }

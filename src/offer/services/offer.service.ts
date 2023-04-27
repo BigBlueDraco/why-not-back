@@ -1,16 +1,14 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { paginate } from 'nestjs-typeorm-paginate';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/services/users.service';
 import { Repository } from 'typeorm';
+import { OfferPagination } from '../dto/OfferPagination.response';
 import { CreateOfferInput } from '../dto/create-offer.input';
 import { OfferResponse } from '../dto/offer.response';
 import { UpdateOfferInput } from '../dto/update-offer.input';
 import { Offer } from '../entities/offer.entity';
-import { paginate } from 'nestjs-typeorm-paginate';
-import { OfferPagination } from '../dto/OfferPagination.response';
-import { Pagination } from 'src/pagination/paginationType';
-import { log } from 'console';
 
 @Injectable()
 export class OfferService {
@@ -62,9 +60,8 @@ export class OfferService {
   async findOne(id: number): Promise<any> {
     const offer = await this.offerRepository.findOne({
       where: { id },
-      relations: { user: true, graded: true },
+      relations: { user: true, graded: true, grades: true },
     });
-    log(offer);
     return offer;
   }
 

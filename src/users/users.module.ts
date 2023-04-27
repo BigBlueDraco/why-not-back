@@ -1,11 +1,10 @@
-import { Module, forwardRef } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './entities/user.entity';
-import { UsersService } from './services/users.service';
-import { UsersResolver } from './resolvers/users.resolver';
+import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { OfferModule } from 'src/offer/offer.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from './entities/user.entity';
+import { UsersResolver } from './resolvers/users.resolver';
+import { UsersService } from './services/users.service';
 
 @Module({
   imports: [

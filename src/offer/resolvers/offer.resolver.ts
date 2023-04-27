@@ -1,22 +1,22 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Int,
-  Context,
-  Parent,
-  ResolveField,
-} from '@nestjs/graphql';
-import { OfferService } from '../services/offer.service';
-import { Offer } from '../entities/offer.entity';
-import { CreateOfferInput } from '../dto/create-offer.input';
-import { UpdateOfferInput } from '../dto/update-offer.input';
 import { UseGuards } from '@nestjs/common';
+import {
+  Args,
+  Context,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { OfferResponse } from '../dto/offer.response';
 import { UserResponse } from 'src/users/dto/get-user.response';
 import { OfferPagination } from '../dto/OfferPagination.response';
+import { CreateOfferInput } from '../dto/create-offer.input';
+import { OfferResponse } from '../dto/offer.response';
+import { UpdateOfferInput } from '../dto/update-offer.input';
+import { Offer } from '../entities/offer.entity';
+import { OfferService } from '../services/offer.service';
 
 @Resolver(() => Offer)
 export class OfferResolver {

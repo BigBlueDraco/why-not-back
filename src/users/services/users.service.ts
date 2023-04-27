@@ -1,11 +1,10 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '../entities/user.entity';
+import { Repository } from 'typeorm';
 import { CreateUserInput } from '../dto/create-user.input';
 import { UpdateUserInput } from '../dto/update-user.input';
-import { Repository } from 'typeorm';
-import { JwtService } from '@nestjs/jwt';
-import { OfferService } from 'src/offer/services/offer.service';
+import { UserEntity } from '../entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -48,10 +47,6 @@ export class UsersService {
     );
     return await this.getOneUser(UpdateUserInput.id);
   }
-  // async findOffersForUser(id) {
-  //   const offers = await this.offerService.findAll();
-  //   return await this.offerService.findAll();
-  // }
   async userFromContext(context: any): Promise<any> {
     const req = context.req;
     const authHeader = req.headers.authorization;

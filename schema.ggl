@@ -4,6 +4,7 @@
 
 input CreateGradeInput {
   givenId: Int!
+  isLiked: Boolean!
   receivedId: Int!
 }
 
@@ -44,7 +45,7 @@ input LoginUserInput {
 }
 
 type Mutation {
-  CreateLike(createLikeInput: CreateGradeInput!): Grade!
+  CreateGrade(createGradeInput: CreateGradeInput!): Grade!
   createOffer(createOfferInput: CreateOfferInput!): Offer!
   createUser(createUser: CreateUserInput!): UserEntity!
   login(loginUserInput: LoginUserInput!): LoginResponse!
@@ -52,7 +53,6 @@ type Mutation {
   removeOffer(id: Int!): Offer!
   removeUser(id: Float!): Float!
   signup(signupUserInput: SignupUserInput!): SingupResponse!
-  updateLike(updateLikeInput: UpdateGradeInput!): Grade!
   updateOffer(updateOfferInput: UpdateOfferInput!): Offer!
   updateUser(updateUser: UpdateUserInput!): UserResponse!
 }
@@ -84,13 +84,11 @@ type Pagination {
 }
 
 type Query {
-  getAllLikes: [Grade!]!
   getAllOffers(limit: Float!, page: Float!): OfferPagination!
   getAllUsers: [UserResponse!]!
   getCurrentUser: UserResponse!
   getOfferById(id: Int!): Offer!
   getOneUser(id: Float!): UserResponse!
-  like(id: Int!): Grade!
 }
 
 input SignupUserInput {
@@ -103,12 +101,6 @@ input SignupUserInput {
 type SingupResponse {
   access_token: String!
   user: UserEntity!
-}
-
-input UpdateGradeInput {
-  givenId: Int
-  id: Int!
-  receivedId: Int
 }
 
 input UpdateOfferInput {

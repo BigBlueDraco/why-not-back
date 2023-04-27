@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Offer } from '../entities/offer.entity';
 import { Pagination } from 'src/pagination/paginationType';
+import { Offer } from '../entities/offer.entity';
 
 @ObjectType()
 export class OfferPagination {

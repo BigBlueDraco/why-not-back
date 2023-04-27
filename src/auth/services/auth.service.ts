@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
+import { hash } from 'bcrypt';
 import { UsersService } from 'src/users/services/users.service';
 import { LoginResponse } from '../dto/login-response';
 import { LoginUserInput } from '../dto/login-user.input';
-import { JwtService } from '@nestjs/jwt';
 import { SignupUserInput } from '../dto/signup-user.input';
-import { hash } from 'bcrypt';
 import { SingupResponse } from '../dto/singip-response';
 
 @Injectable()

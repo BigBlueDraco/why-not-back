@@ -1,5 +1,4 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { Entity } from 'typeorm';
+import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class SignupUserInput {
