@@ -7,50 +7,50 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import { LikeService } from './like.service';
-import { Like } from './entities/like.entity';
-import { CreateLikeInput } from './dto/create-like.input';
-import { UpdateLikeInput } from './dto/update-like.input';
+import { GradeService } from './grade.service';
+import { Grade } from './entities/grade.entity';
+import { CreateGradeInput } from './dto/create-grade.input';
+import { UpdateGradeInput } from './dto/update-grade.input';
 import { Offer } from 'src/offer/entities/offer.entity';
 import { OfferService } from 'src/offer/services/offer.service';
 
-@Resolver(() => Like)
-export class LikeResolver {
+@Resolver(() => Grade)
+export class GradeResolver {
   constructor(
-    private readonly likeService: LikeService,
+    private readonly likeService: GradeService,
     private readonly offerService: OfferService,
   ) {}
 
-  @Mutation(() => Like, { name: 'CreateLike' })
-  createLike(@Args('createLikeInput') createLikeInput: CreateLikeInput) {
+  @Mutation(() => Grade, { name: 'CreateLike' })
+  createLike(@Args('createLikeInput') createLikeInput: CreateGradeInput) {
     return this.likeService.create(createLikeInput);
   }
 
-  @Query(() => [Like], { name: 'getAllLikes' })
+  @Query(() => [Grade], { name: 'getAllLikes' })
   async findAll() {
     return await this.likeService.findAll();
   }
 
-  @Query(() => Like, { name: 'like' })
+  @Query(() => Grade, { name: 'like' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.likeService.findOne(id);
   }
 
-  @Mutation(() => Like)
-  updateLike(@Args('updateLikeInput') updateLikeInput: UpdateLikeInput) {
+  @Mutation(() => Grade)
+  updateLike(@Args('updateLikeInput') updateLikeInput: UpdateGradeInput) {
     return this.likeService.update(updateLikeInput.id, updateLikeInput);
   }
 
-  @Mutation(() => Like)
+  @Mutation(() => Grade)
   removeLike(@Args('id', { type: () => Int }) id: number) {
     return this.likeService.remove(id);
   }
   @ResolveField((returns) => Offer)
-  async given(@Parent() like: Like) {
+  async given(@Parent() like: Grade) {
     return await this.offerService.findOne(like.givenId);
   }
   @ResolveField((returns) => Offer)
-  async received(@Parent() like: Like) {
+  async received(@Parent() like: Grade) {
     return await this.offerService.findOne(like.receivedId);
   }
 }

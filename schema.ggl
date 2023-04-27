@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-input CreateLikeInput {
+input CreateGradeInput {
   givenId: Int!
   receivedId: Int!
 }
@@ -24,9 +24,10 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Like {
+type Grade {
   given: Offer!
   givenId: Float!
+  grade: String!
   id: ID!
   received: Offer!
   receivedId: Float!
@@ -43,15 +44,15 @@ input LoginUserInput {
 }
 
 type Mutation {
-  CreateLike(createLikeInput: CreateLikeInput!): Like!
+  CreateLike(createLikeInput: CreateGradeInput!): Grade!
   createOffer(createOfferInput: CreateOfferInput!): Offer!
   createUser(createUser: CreateUserInput!): UserEntity!
   login(loginUserInput: LoginUserInput!): LoginResponse!
-  removeLike(id: Int!): Like!
+  removeLike(id: Int!): Grade!
   removeOffer(id: Int!): Offer!
   removeUser(id: Float!): Float!
   signup(signupUserInput: SignupUserInput!): SingupResponse!
-  updateLike(updateLikeInput: UpdateLikeInput!): Like!
+  updateLike(updateLikeInput: UpdateGradeInput!): Grade!
   updateOffer(updateOfferInput: UpdateOfferInput!): Offer!
   updateUser(updateUser: UpdateUserInput!): UserResponse!
 }
@@ -59,9 +60,9 @@ type Mutation {
 type Offer {
   createdAt: DateTime!
   description: String!
+  graded: [Grade!]
+  grades: [Grade!]
   id: ID!
-  liked: [Like!]
-  likes: [Like!]
   matches: [Offer!]
   title: String!
   updatedAt: DateTime!
@@ -83,13 +84,13 @@ type Pagination {
 }
 
 type Query {
-  getAllLikes: [Like!]!
+  getAllLikes: [Grade!]!
   getAllOffers(limit: Float!, page: Float!): OfferPagination!
   getAllUsers: [UserResponse!]!
   getCurrentUser: UserResponse!
   getOfferById(id: Int!): Offer!
   getOneUser(id: Float!): UserResponse!
-  like(id: Int!): Like!
+  like(id: Int!): Grade!
 }
 
 input SignupUserInput {
@@ -104,7 +105,7 @@ type SingupResponse {
   user: UserEntity!
 }
 
-input UpdateLikeInput {
+input UpdateGradeInput {
   givenId: Int
   id: Int!
   receivedId: Int

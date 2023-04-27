@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLikeInput } from './dto/create-like.input';
-import { UpdateLikeInput } from './dto/update-like.input';
+import { CreateGradeInput } from './dto/create-grade.input';
+import { UpdateGradeInput } from './dto/update-grade.input';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like } from './entities/like.entity';
+import { Grade } from './entities/grade.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class LikeService {
+export class GradeService {
   constructor(
-    @InjectRepository(Like)
-    private readonly likeRepository: Repository<Like>,
+    @InjectRepository(Grade)
+    private readonly likeRepository: Repository<Grade>,
   ) {}
-  async create(createLikeInput: CreateLikeInput) {
+  async create(createLikeInput: CreateGradeInput) {
     const like = await this.likeRepository.save({
       ...createLikeInput,
     });
@@ -31,7 +31,7 @@ export class LikeService {
     });
   }
 
-  update(id: number, updateLikeInput: UpdateLikeInput) {
+  update(id: number, updateLikeInput: UpdateGradeInput) {
     return `This action updates a #${id} like`;
   }
 

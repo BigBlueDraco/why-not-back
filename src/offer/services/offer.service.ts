@@ -43,7 +43,7 @@ export class OfferService {
       {
         relations: {
           user: true,
-          liked: true,
+          graded: true,
         },
       },
     );
@@ -62,7 +62,7 @@ export class OfferService {
   async findOne(id: number): Promise<any> {
     const offer = await this.offerRepository.findOne({
       where: { id },
-      relations: { user: true, liked: true },
+      relations: { user: true, graded: true },
     });
     log(offer);
     return offer;
@@ -75,7 +75,7 @@ export class OfferService {
     });
     const offer = await this.offerRepository.findOne({
       where: { id: id },
-      relations: { liked: true },
+      relations: { graded: true },
     });
     const res = await this.offerRepository.update(id, { ...offer });
     return res;

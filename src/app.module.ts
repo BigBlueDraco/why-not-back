@@ -7,7 +7,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { OfferModule } from './offer/offer.module';
-import { LikeModule } from './like/like.module';
+import { GradeModule } from './grade/grade.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -40,7 +40,7 @@ import { LikeModule } from './like/like.module';
     UsersModule,
     AuthModule,
     OfferModule,
-    LikeModule,
+    GradeModule,
   ],
   controllers: [],
   providers: [],

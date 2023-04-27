@@ -4,7 +4,7 @@ import { OfferResolver } from './resolvers/offer.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Offer } from './entities/offer.entity';
 import { UsersModule } from 'src/users/users.module';
-import { LikeModule } from 'src/like/like.module';
+import { GradeModule } from 'src/grade/grade.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Offer]), forwardRef(() => UsersModule)],

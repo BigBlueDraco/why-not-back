@@ -9,8 +9,8 @@ import {
 } from 'typeorm';
 
 @ObjectType()
-@Entity('likes')
-export class Like {
+@Entity('grades')
+export class Grade {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,7 +20,7 @@ export class Like {
   givenId: number;
 
   @Field(() => Offer)
-  @ManyToOne(() => Offer, (offer) => offer.likes, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Offer, (offer) => offer.grades, { onDelete: 'CASCADE' })
   @JoinColumn()
   given: Offer;
 
@@ -29,7 +29,11 @@ export class Like {
   receivedId: number;
 
   @Field(() => Offer)
-  @ManyToOne(() => Offer, (offer) => offer.liked, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Offer, (offer) => offer.graded, { onDelete: 'CASCADE' })
   @JoinColumn()
   received: Offer;
+
+  @Field(() => String)
+  @Column()
+  grade: string;
 }

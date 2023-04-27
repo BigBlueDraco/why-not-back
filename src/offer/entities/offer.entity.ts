@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Like } from 'src/like/entities/like.entity';
+import { Grade } from 'src/grade/entities/grade.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import {
   Column,
@@ -42,15 +42,15 @@ export class Offer {
   @JoinColumn()
   user: UserEntity;
 
-  @Field(() => [Like], { nullable: true })
-  @OneToMany(() => Like, (like) => like.received)
+  @Field(() => [Grade], { nullable: true })
+  @OneToMany(() => Grade, (grade) => grade.received)
   @JoinColumn()
-  liked: Like[];
+  graded: Grade[];
 
-  @Field(() => [Like], { nullable: true })
-  @OneToMany(() => Like, (like) => like.given)
+  @Field(() => [Grade], { nullable: true })
+  @OneToMany(() => Grade, (grade) => grade.given)
   @JoinColumn()
-  likes: Like[];
+  grades: Grade[];
 
   @Field(() => [Offer], { nullable: true })
   @OneToMany(() => Offer, (offer) => offer.matches)
