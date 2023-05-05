@@ -9,6 +9,7 @@ import { CreateOfferInput } from '../dto/create-offer.input';
 import { OfferResponse } from '../dto/offer.response';
 import { UpdateOfferInput } from '../dto/update-offer.input';
 import { Offer } from '../entities/offer.entity';
+import { FileService } from 'src/file/file.service';
 
 @Injectable()
 export class OfferService {
@@ -18,12 +19,24 @@ export class OfferService {
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
   ) {}
+  createPagination({ items, meta }) {
+    return {
+      items: items,
+      pagination: {
+        totalItems: meta.totalItems,
+        itemCount: meta.itemCount,
+        itemsPerPage: meta.itemsPerPage,
+        totalPages: meta.totalPages,
+        currentPage: meta.currentPage,
+      },
+    };
+  }
   async create(
     context: any,
     createOfferInput: CreateOfferInput,
   ): Promise<OfferResponse> {
     const user = await this.usersService.userFromContext(context);
-
+    // const uploadetFile = this.fileService.uploadToDrive(file);
     const offer = await this.offerRepository.save({
       userId: user.id,
       ...createOfferInput,
@@ -45,16 +58,31 @@ export class OfferService {
         },
       },
     );
-    return {
-      items: items,
-      pagination: {
-        totalItems: meta.totalItems,
-        itemCount: meta.itemCount,
-        itemsPerPage: meta.itemsPerPage,
-        totalPages: meta.totalPages,
-        currentPage: meta.currentPage,
+    return this.createPagination({ items, meta });
+  }
+
+  async findOffersWithotCurrentUserOffers(
+    context: any,
+    page: number = 1,
+    limit: number = 10,
+  ) {
+    const currentUser = await this.usersService.userFromContext(context);
+
+    const { meta, items } = await paginate(
+      this.offerRepository
+        .createQueryBuilder('offer')
+        .leftJoinAndSelect('offer.user', 'user')
+        .leftJoinAndSelect('offer.graded', 'graded')
+        .leftJoinAndSelect('offer.grades', 'grades')
+        .where('offer.userId != :currentUserId', {
+          currentUserId: currentUser.id,
+        }),
+      {
+        page: 1,
+        limit: 10,
       },
-    };
+    );
+    return this.createPagination({ items, meta });
   }
 
   async findOne(id: number): Promise<any> {

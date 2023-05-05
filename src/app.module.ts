@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { GradeModule } from './grade/grade.module';
 import { OfferModule } from './offer/offer.module';
 import { UsersModule } from './users/users.module';
+import { FileModule } from './file/file.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -41,6 +42,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     OfferModule,
     GradeModule,
+    FileModule,
   ],
   controllers: [],
   providers: [],

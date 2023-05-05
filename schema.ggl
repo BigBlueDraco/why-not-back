@@ -55,6 +55,7 @@ type Mutation {
   signup(signupUserInput: SignupUserInput!): SingupResponse!
   updateOffer(updateOfferInput: UpdateOfferInput!): Offer!
   updateUser(updateUser: UpdateUserInput!): UserResponse!
+  uploadFile(file: Upload!): String!
 }
 
 type Offer {
@@ -84,10 +85,11 @@ type Pagination {
 }
 
 type Query {
-  getAllOffers(limit: Float!, page: Float!): OfferPagination!
+  getAllOffers(limit: Float, page: Float): OfferPagination!
   getAllUsers: [UserResponse!]!
   getCurrentUser: UserResponse!
   getOfferById(id: Int!): Offer!
+  getOffersForUser(limit: Float, page: Float): OfferPagination!
   getOneUser(id: Float!): UserResponse!
 }
 
@@ -117,6 +119,9 @@ input UpdateUserInput {
   last_name: String
   password: String
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 type UserEntity {
   createdAt: DateTime!

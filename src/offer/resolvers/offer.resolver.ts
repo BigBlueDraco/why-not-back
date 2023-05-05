@@ -36,8 +36,8 @@ export class OfferResolver {
   @Query(() => OfferPagination, { name: 'getAllOffers' })
   @UseGuards(JwtAuthGuard)
   async findAll(
-    @Args('page') page: number = 1,
-    @Args('limit') limit: number = 10,
+    @Args('page', { nullable: true }) page: number,
+    @Args('limit', { nullable: true }) limit: number,
   ): Promise<OfferPagination> {
     const data = await this.offerService.findAll(page, limit);
     return data;
@@ -69,6 +69,20 @@ export class OfferResolver {
   @UseGuards(JwtAuthGuard)
   async user(@Parent() offer: OfferResponse): Promise<UserResponse> {
     return await this.offerService.getUser(offer.userId);
+  }
+
+  @Query(() => OfferPagination, { name: 'getOffersForUser' })
+  @UseGuards(JwtAuthGuard)
+  async findOffersWithotCurrentUserOffers(
+    @Context() context,
+    @Args('page', { nullable: true }) page: number,
+    @Args('limit', { nullable: true }) limit: number,
+  ): Promise<OfferPagination> {
+    return this.offerService.findOffersWithotCurrentUserOffers(
+      context,
+      page,
+      limit,
+    );
   }
 
   // @ResolveField((returns) => [Offer])

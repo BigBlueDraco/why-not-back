@@ -36,3 +36,5 @@ lerna-debug.log*
 ]
 .env
 
+secret_google_key.json
+
