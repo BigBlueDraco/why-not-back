@@ -12,10 +12,10 @@ import { Stream } from 'stream';
 export class FileResolver {
   constructor(private readonly fileService: FileService) {}
 
-  @Mutation(() => String)
-  async uploadFile(
-    @Args({ name: 'file', type: () => GraphQLUpload }) file: FileUpload,
-  ) {
-    return this.fileService.uploadToDrive(file);
-  }
+  // @Mutation(() => String)
+  // async uploadFile(
+  //   @Args({ name: 'file', type: () => GraphQLUpload }) file: FileUpload,
+  // ) {
+  //   return this.fileService.uploadToDrive(file, 'userID');
+  // }
 }

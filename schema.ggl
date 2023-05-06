@@ -46,7 +46,7 @@ input LoginUserInput {
 
 type Mutation {
   CreateGrade(createGradeInput: CreateGradeInput!): Grade!
-  createOffer(createOfferInput: CreateOfferInput!): Offer!
+  createOffer(createOfferInput: CreateOfferInput!, file: Upload!): Offer!
   createUser(createUser: CreateUserInput!): UserEntity!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeLike(id: Int!): Grade!
@@ -55,7 +55,6 @@ type Mutation {
   signup(signupUserInput: SignupUserInput!): SingupResponse!
   updateOffer(updateOfferInput: UpdateOfferInput!): Offer!
   updateUser(updateUser: UpdateUserInput!): UserResponse!
-  uploadFile(file: Upload!): String!
 }
 
 type Offer {
@@ -64,6 +63,7 @@ type Offer {
   graded: [Grade!]
   grades: [Grade!]
   id: ID!
+  img: String!
   matches: [Offer!]
   title: String!
   updatedAt: DateTime!

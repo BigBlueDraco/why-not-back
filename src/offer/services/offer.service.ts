@@ -18,6 +18,7 @@ export class OfferService {
     private readonly offerRepository: Repository<Offer>,
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
+    private readonly fileService: FileService,
   ) {}
   createPagination({ items, meta }) {
     return {
@@ -34,12 +35,18 @@ export class OfferService {
   async create(
     context: any,
     createOfferInput: CreateOfferInput,
+    file,
   ): Promise<OfferResponse> {
     const user = await this.usersService.userFromContext(context);
-    // const uploadetFile = this.fileService.uploadToDrive(file);
+    const uploadetFile = await this.fileService.uploadToDrive({
+      file,
+      userId: user.id,
+    });
+    console.log(file);
     const offer = await this.offerRepository.save({
       userId: user.id,
       ...createOfferInput,
+      img: uploadetFile,
     });
     return offer;
   }

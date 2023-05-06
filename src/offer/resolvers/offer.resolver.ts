@@ -17,6 +17,7 @@ import { OfferResponse } from '../dto/offer.response';
 import { UpdateOfferInput } from '../dto/update-offer.input';
 import { Offer } from '../entities/offer.entity';
 import { OfferService } from '../services/offer.service';
+import { FileUpload, GraphQLUpload } from 'graphql-upload-ts';
 
 @Resolver(() => Offer)
 export class OfferResolver {
@@ -26,11 +27,16 @@ export class OfferResolver {
   @UseGuards(JwtAuthGuard)
   async createOffer(
     @Args('createOfferInput') createOfferInput: CreateOfferInput,
+    @Args({ name: 'file', type: () => GraphQLUpload }) file: FileUpload,
     @Context() context,
   ) {
-    return await this.offerService.create(context, {
-      ...createOfferInput,
-    });
+    return await this.offerService.create(
+      context,
+      {
+        ...createOfferInput,
+      },
+      file,
+    );
   }
 
   @Query(() => OfferPagination, { name: 'getAllOffers' })

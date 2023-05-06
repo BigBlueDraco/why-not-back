@@ -7,7 +7,11 @@ import { OfferService } from './services/offer.service';
 import { FileModule } from 'src/file/file.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Offer]), forwardRef(() => UsersModule)],
+  imports: [
+    TypeOrmModule.forFeature([Offer]),
+    forwardRef(() => UsersModule),
+    FileModule,
+  ],
   providers: [OfferResolver, OfferService],
   exports: [OfferService],
 })

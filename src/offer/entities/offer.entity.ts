@@ -37,6 +37,10 @@ export class Offer {
   @Field()
   userId: number;
 
+  @Field()
+  @Column()
+  img: String;
+
   @Field(() => UserEntity)
   @ManyToOne(() => UserEntity, (user) => user.offers, { onDelete: 'CASCADE' })
   @JoinColumn()
