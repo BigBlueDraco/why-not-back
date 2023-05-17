@@ -10,6 +10,7 @@ import { OfferResponse } from '../dto/offer.response';
 import { UpdateOfferInput } from '../dto/update-offer.input';
 import { Offer } from '../entities/offer.entity';
 import { FileService } from 'src/file/file.service';
+import { FileUpload, Upload } from 'graphql-upload-ts';
 
 @Injectable()
 export class OfferService {
@@ -35,14 +36,13 @@ export class OfferService {
   async create(
     context: any,
     createOfferInput: CreateOfferInput,
-    file,
+    file: FileUpload,
   ): Promise<OfferResponse> {
     const user = await this.usersService.userFromContext(context);
     const uploadetFile = await this.fileService.uploadToDrive({
       file,
       userId: user.id,
     });
-    console.log(file);
     const offer = await this.offerRepository.save({
       userId: user.id,
       ...createOfferInput,
@@ -100,16 +100,23 @@ export class OfferService {
     return offer;
   }
 
-  async update(id: number, updateOfferInput: UpdateOfferInput): Promise<any> {
-    const { likedId, ...rest } = updateOfferInput;
-    const liked = await this.offerRepository.findOne({
-      where: { id: likedId },
-    });
-    const offer = await this.offerRepository.findOne({
+  async update(
+    id: number,
+    updateOfferInput: UpdateOfferInput,
+    file?: FileUpload,
+  ): Promise<any> {
+    const updetetOffer = await this.offerRepository.findOne({
       where: { id: id },
-      relations: { graded: true },
     });
-    const res = await this.offerRepository.update(id, { ...offer });
+    const uploadetFile = await this.fileService.uploadToDrive({
+      file,
+      userId: updetetOffer.user.id,
+    });
+    const res = await this.offerRepository.update(id, {
+      ...updateOfferInput,
+      img: uploadetFile,
+    });
+
     return res;
   }
 

@@ -5,6 +5,4 @@ import { CreateOfferInput } from './create-offer.input';
 export class UpdateOfferInput extends PartialType(CreateOfferInput) {
   @Field(() => Int)
   id: number;
-  @Field(() => Int, { nullable: true })
-  likedId: number;
 }

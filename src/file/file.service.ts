@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { google } from 'googleapis';
 import { join } from 'path';
-import { FileUpload } from 'graphql-upload-ts';
 import { v4 as uuid } from 'uuid';
 import { uploadToDrive } from './dto/uploadToDrive';
 
@@ -16,7 +15,13 @@ export class FileService {
     });
     this.driveService = google.drive({ version: 'v3', auth });
   }
-  async findFolderInDirectory(folderName: String) {
+  async findFolderInDirectory({
+    parent,
+    folderName,
+  }: {
+    parent: string | number;
+    folderName: string | number;
+  }) {
     const res = await this.driveService.files.list({
       q: `mimeType='application/vnd.google-apps.folder' and trashed=false and name='${folderName}' and parents in '${this.GOOGLE_API_FOLDER_ID}'`,
       fields: 'nextPageToken, files(id, name, createdTime)',
@@ -24,8 +29,6 @@ export class FileService {
 
     if (res.data.files.length) {
       const folder = res.data.files[0];
-      console.log(`Знайдено папку: ${folder.name}`);
-      console.log(`Її ID: ${folder.id}`);
       return folder.id;
     } else {
       console.log(
@@ -35,10 +38,16 @@ export class FileService {
     }
   }
 
-  async createFolder(folderName: String) {
+  async createFolder({
+    parent,
+    folderName,
+  }: {
+    parent: string | number;
+    folderName: string | number;
+  }) {
     const metadata = {
       name: folderName,
-      parents: [this.GOOGLE_API_FOLDER_ID],
+      parents: [parent],
       mimeType: 'application/vnd.google-apps.folder',
     };
 
@@ -48,16 +57,23 @@ export class FileService {
     });
 
     console.log(
-      `Створено нову папку з назвою "${folderName}" та ID "${res.data.id}".`,
+      `
+      A new folder with the name "${folderName}" and ID "${res.data.id}" has been created.`,
     );
     return res.data.id;
   }
 
   async uploadToDrive({ file, userId }: uploadToDrive) {
     try {
-      let parentFolder = await this.findFolderInDirectory(userId);
+      let parentFolder = await this.findFolderInDirectory({
+        parent: this.GOOGLE_API_FOLDER_ID,
+        folderName: userId,
+      });
       if (!!!parentFolder) {
-        parentFolder = await this.createFolder(userId);
+        parentFolder = await this.createFolder({
+          parent: this.GOOGLE_API_FOLDER_ID,
+          folderName: userId,
+        });
       }
       const { createReadStream, filename, mimetype } = file;
 
@@ -74,10 +90,32 @@ export class FileService {
         media: media,
         fields: 'id',
       });
-      const url = `https://drive.google.com/uc?export=view&id=${res.data.id}`;
-      return url;
-    } catch (e) {
-      console.log(e);
+      return res.data.id;
+    } catch (error) {
+      console.error(
+        'An error occurred while uploading a file to Google Drive',
+        error,
+      );
+    }
+  }
+
+  async deleteFromDrive(imgId: string) {
+    try {
+      const file = await this.driveService.files.get({ fileId: imgId });
+      if (file) {
+        await this.driveService.files.delete({
+          fileId: imgId,
+        });
+        return imgId;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error(
+        'An error occurred while deleting a file from Google Drive',
+        error,
+      );
+      return null;
     }
   }
 }

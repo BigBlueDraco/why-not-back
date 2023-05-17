@@ -108,7 +108,6 @@ type SingupResponse {
 input UpdateOfferInput {
   description: String
   id: Int!
-  likedId: Int
   title: String
 }
 

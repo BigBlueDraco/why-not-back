@@ -5,5 +5,5 @@ export class uploadToDrive {
   @Field()
   file: FileUpload;
   @Field()
-  userId: string;
+  userId: number;
 }
