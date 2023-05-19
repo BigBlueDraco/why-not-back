@@ -26,14 +26,14 @@ import { FileModule } from './file/file.module';
       useFactory: async (config: ConfigService) => {
         return {
           charset: 'utf-8',
-          entities: [],
           type: 'postgres',
           host: 'localhost',
           username: config.get<string>('TYPEORM_USERNAME'),
           password: config.get<string>('TYPEORM_PASSWORD'),
           database: config.get<string>('TYPEORM_DATABASE'),
           port: config.get<number>('TYPEORM_PORT'),
-          synchronize: true,
+          entitys: config.get<string>('TYPEORM_ENTITIES'),
+          synchronize: config.get<boolean>('TYPEORM_SYNCHRONIZE'),
           autoLoadEntities: true,
         };
       },
